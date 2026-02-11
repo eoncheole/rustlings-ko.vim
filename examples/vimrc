@@ -1,0 +1,285 @@
+" ============================================
+" Vim Rust 개발환경 설정 (rustlings-ko.vim 포함)
+" ============================================
+
+" ---- 기본 설정 ----
+set nocompatible
+set encoding=utf-8
+set fileencoding=utf-8
+set termguicolors
+set number
+set relativenumber
+set cursorline
+set signcolumn=yes
+set mouse=a
+set clipboard=unnamed
+set hidden
+set nobackup
+set nowritebackup
+set updatetime=300
+set shortmess+=c
+set scrolloff=8
+set sidescrolloff=8
+
+" 검색
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" 들여쓰기 (Rust 표준: 4 spaces)
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set smartindent
+set autoindent
+
+" 성능
+set lazyredraw
+set ttyfast
+
+" 분할
+set splitbelow
+set splitright
+
+" 자동 저장 시 trailing whitespace 제거
+autocmd BufWritePre *.rs %s/\s\+$//e
+
+" Leader 키
+let mapleader = " "
+
+" ---- 플러그인 (vim-plug) ----
+call plug#begin('~/.vim/plugged')
+
+" === Rust 핵심 ===
+Plug 'rust-lang/rust.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'eoncheole/rustlings-ko.vim'
+
+" === 파일 탐색 ===
+Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" === 코드 탐색 ===
+Plug 'preservim/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
+
+" === Git ===
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" === UI / UX ===
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+
+" === 편의 ===
+Plug 'tpope/vim-commentary'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'machakann/vim-highlightedyank'
+Plug 'frazrepo/vim-rainbow'
+Plug 'preservim/vim-indent-guides'
+Plug 'osyo-manga/vim-anzu'
+Plug 'yuttie/comfortable-motion.vim'
+Plug 'itchyny/vim-cursorword'
+Plug 'bitc/vim-bad-whitespace'
+Plug 'preservim/nerdcommenter'
+
+call plug#end()
+
+" ---- 테마 설정 ----
+set background=dark
+let g:gruvbox_material_background = 'medium'
+let g:gruvbox_material_better_performance = 1
+silent! colorscheme gruvbox-material
+
+" ---- rustlings-ko.vim 설정 ----
+let g:rustlings_ko_mode = 'mapping'
+let g:rustlings_ko_enabled = 1
+let g:rustlings_ko_backend = 'auto'
+let g:rustlings_ko_show_original = 1
+let g:rustlings_ko_cache_max_size = 500
+
+" ---- rust.vim 설정 ----
+let g:rustfmt_autosave = 1
+let g:rustfmt_emit_files = 1
+let g:rustfmt_fail_silently = 0
+let g:rust_clip_command = 'pbcopy'
+
+" ---- Airline 설정 ----
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#coc#enabled = 1
+let g:airline_powerline_fonts = 0
+let g:airline_theme = 'gruvbox_material'
+
+" ---- NERDTree 설정 ----
+let NERDTreeShowHidden = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeIgnore = ['\.git$', 'target$', '\.DS_Store']
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" ---- Tagbar 설정 (Rust) ----
+let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \'T:types',
+        \'f:functions',
+        \'g:enums',
+        \'s:structs',
+        \'m:modules',
+        \'c:constants',
+        \'t:traits',
+        \'i:impls',
+    \]
+\}
+
+" ---- fzf 설정 ----
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right,50%', 'ctrl-/']
+
+" ---- GitGutter 설정 ----
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '▎'
+let g:gitgutter_sign_removed = '▁'
+
+" ---- Highlighted Yank ----
+let g:highlightedyank_highlight_duration = 200
+
+" ---- Rainbow 설정 ----
+let g:rainbow_active = 1
+
+" ---- Indent Guides 설정 ----
+let g:indent_guides_enable_on_vim_startup = 1
+
+" ============================================
+" 키 매핑
+" ============================================
+
+" ---- 파일 탐색 ----
+nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>nf :NERDTreeFind<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
+
+" ---- fzf 검색 ----
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>rg :Rg<CR>
+nnoremap <Leader>l :Lines<CR>
+nnoremap <Leader>h :History<CR>
+
+" ---- Tagbar ----
+nnoremap <Leader>t :TagbarToggle<CR>
+
+" ---- 버퍼/탭 이동 ----
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>
+nnoremap <Leader>bd :bdelete<CR>
+
+" ---- 분할 이동 ----
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" ---- 검색 하이라이트 해제 ----
+nnoremap <Leader><Space> :nohlsearch<CR>
+
+" ---- 빠른 저장 ----
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>wq :wq<CR>
+
+" ---- 터미널 ----
+nnoremap <Leader>T :terminal<CR>
+
+" ---- Git (Fugitive) ----
+nnoremap <Leader>gs :Git<CR>
+nnoremap <Leader>gd :Gdiffsplit<CR>
+nnoremap <Leader>gb :Git blame<CR>
+nnoremap <Leader>gl :Git log --oneline -20<CR>
+
+" ---- Cargo 단축키 ----
+nnoremap <Leader>cb :!cargo build<CR>
+nnoremap <Leader>cr :!cargo run<CR>
+nnoremap <Leader>ct :!cargo test<CR>
+nnoremap <Leader>cc :!cargo check<CR>
+nnoremap <Leader>cl :!cargo clippy<CR>
+
+" ============================================
+" CoC.nvim 설정 (rust-analyzer LSP)
+" ============================================
+
+" Tab 자동완성
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Enter로 선택 확정
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" 수동 자동완성 트리거
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" 진단(에러) 이동
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" 코드 탐색
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" 문서 보기 (Hover) - rustlings-ko가 Rust 파일에서 K를 한국어 진단으로 오버라이드
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" 커서 위치 심볼 하이라이트
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" 리팩토링
+nmap <Leader>rn <Plug>(coc-rename)
+nmap <Leader>ca <Plug>(coc-codeaction-cursor)
+nmap <Leader>cx <Plug>(coc-codelens-action)
+
+" 포맷팅
+xmap <Leader>fm <Plug>(coc-format-selected)
+nmap <Leader>fm <Plug>(coc-format)
+
+" 진단 목록
+nnoremap <silent> <Leader>e :<C-u>CocList diagnostics<CR>
+nnoremap <silent> <Leader>o :<C-u>CocList outline<CR>
+nnoremap <silent> <Leader>s :<C-u>CocList -I symbols<CR>
+
+" ---- Rust 파일 전용 설정 ----
+augroup RustSettings
+    autocmd!
+    autocmd FileType rust setlocal tabstop=4 shiftwidth=4 expandtab
+    autocmd FileType rust setlocal colorcolumn=100
+    autocmd BufWritePre *.rs silent! call CocAction('runCommand', 'editor.action.organizeImport')
+augroup END
+
+" ---- Toml 파일 설정 (Cargo.toml) ----
+augroup TomlSettings
+    autocmd!
+    autocmd FileType toml setlocal tabstop=2 shiftwidth=2 expandtab
+augroup END
