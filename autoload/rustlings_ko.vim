@@ -40,6 +40,11 @@ function! rustlings_ko#activate() abort
     autocmd QuickFixCmdPost [^l]* call rustlings_ko#translate_quickfix()
     autocmd QuickFixCmdPost l* call rustlings_ko#translate_loclist()
   augroup END
+
+  " Auto-check on save when no LSP backend is available
+  if get(g:, 'rustlings_ko_auto_check', 1) && s:detected_backend ==# 'quickfix'
+    call rustlings_ko#builder#setup()
+  endif
 endfunction
 
 function! s:detect_backend() abort
@@ -132,8 +137,16 @@ function! s:translate_list_items(items) abort
         continue
       endif
     endif
-    let l:translated = rustlings_ko#translate(l:item.text)
-    if l:translated !=# l:item.text
+
+    " Reconstruct message with error code if .nr is available
+    " (errorformat %n extracts error number into .nr, e.g. E0308 -> nr=308)
+    let l:msg = l:item.text
+    if l:item.nr > 0
+      let l:msg = printf('[E%04d]: %s', l:item.nr, l:item.text)
+    endif
+
+    let l:translated = rustlings_ko#translate(l:msg)
+    if l:translated !=# l:msg
       let l:item.text = l:translated
       let l:changed = 1
     endif
@@ -190,6 +203,7 @@ function! rustlings_ko#status() abort
   echomsg '  활성화: ' . (g:rustlings_ko_enabled ? '예' : '아니오')
   echomsg '  모드: ' . g:rustlings_ko_mode
   echomsg '  백엔드: ' . (s:detected_backend !=# '' ? s:detected_backend : '미감지')
+  echomsg '  자동 빌드: ' . (s:detected_backend ==# 'quickfix' && get(g:, 'rustlings_ko_auto_check', 1) ? '예 (저장 시 cargo check)' : '아니오')
   echomsg '  캐시 크기: ' . rustlings_ko#cache#size() . '/' . g:rustlings_ko_cache_max_size
   if g:rustlings_ko_mode ==# 'llm'
     echomsg '  LLM 프로바이더: ' . g:rustlings_ko_llm_provider
