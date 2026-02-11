@@ -1,0 +1,180 @@
+*rustlings-ko.txt*  Rust 진단 메시지 한국어 번역 플러그인
+
+                  rustlings-ko.vim ~
+            Rust 컴파일러 진단 메시지 한국어 번역
+
+==============================================================================
+CONTENTS                                            *rustlings-ko-contents*
+
+    1. 소개 ............................ |rustlings-ko-introduction|
+    2. 요구사항 ........................ |rustlings-ko-requirements|
+    3. 설치 ............................ |rustlings-ko-installation|
+    4. 설정 ............................ |rustlings-ko-configuration|
+    5. 명령어 .......................... |rustlings-ko-commands|
+    6. 백엔드 .......................... |rustlings-ko-backends|
+    7. LLM 모드 ....................... |rustlings-ko-llm|
+    8. 라이선스 ........................ |rustlings-ko-license|
+
+==============================================================================
+1. 소개                                         *rustlings-ko-introduction*
+
+rustlings-ko.vim은 Rust 컴파일러의 영어 진단 메시지를 한국어로 번역해주는
+Vim 플러그인입니다. 160개 이상의 에러 코드, 46개의 패턴 매칭, 10개의
+경고 메시지, 15개의 힌트 메시지를 포함하고 있습니다.
+
+오프라인 매핑 기반 번역이 기본 모드이며, 선택적으로 LLM API를 사용한
+폴백 번역도 지원합니다.
+
+==============================================================================
+2. 요구사항                                     *rustlings-ko-requirements*
+
+- Vim 8.2 이상
+- Rust 개발 환경
+
+선택 사항:
+- ALE (dense-analysis/ale)
+- vim-lsp (prabirshrestha/vim-lsp)
+- coc.nvim (neoclide/coc.nvim)
+- curl (LLM 모드 사용 시)
+
+==============================================================================
+3. 설치                                         *rustlings-ko-installation*
+
+vim-plug: >
+    Plug 'eoncheole/rustlings-ko.vim'
+<
+Vundle: >
+    Plugin 'eoncheole/rustlings-ko.vim'
+<
+Pathogen: >
+    cd ~/.vim/bundle
+    git clone https://github.com/eoncheole/rustlings-ko.vim
+<
+Vim 패키지 (Vim 8+): >
+    mkdir -p ~/.vim/pack/plugins/start
+    cd ~/.vim/pack/plugins/start
+    git clone https://github.com/eoncheole/rustlings-ko.vim
+<
+==============================================================================
+4. 설정                                        *rustlings-ko-configuration*
+
+                                                *g:rustlings_ko_enabled*
+g:rustlings_ko_enabled ~
+    플러그인 활성화/비활성화. 기본값: 1
+>
+    let g:rustlings_ko_enabled = 1
+<
+                                                *g:rustlings_ko_mode*
+g:rustlings_ko_mode ~
+    번역 모드. 'mapping' = 오프라인 매핑만 사용,
+    'llm' = 매핑 + LLM 폴백. 기본값: 'mapping'
+>
+    let g:rustlings_ko_mode = 'mapping'
+<
+                                                *g:rustlings_ko_show_original*
+g:rustlings_ko_show_original ~
+    번역문 아래에 원문 영어 메시지를 표시할지 여부. 기본값: 0
+>
+    let g:rustlings_ko_show_original = 0
+<
+                                                *g:rustlings_ko_cache_max_size*
+g:rustlings_ko_cache_max_size ~
+    LRU 번역 캐시의 최대 항목 수. 기본값: 500
+>
+    let g:rustlings_ko_cache_max_size = 500
+<
+                                                *g:rustlings_ko_backend*
+g:rustlings_ko_backend ~
+    진단 메시지를 가로채는 백엔드.
+    'auto'    - 자동 감지 (vim-lsp > coc > ALE > quickfix)
+    'ale'     - ALE
+    'vim-lsp' - vim-lsp
+    'coc'     - coc.nvim
+    'quickfix'- quickfix/location list만 번역
+    기본값: 'auto'
+>
+    let g:rustlings_ko_backend = 'auto'
+<
+                                                *g:rustlings_ko_diagnostics_format*
+g:rustlings_ko_diagnostics_format ~
+    번역된 메시지의 printf 형식. 기본값: '%s'
+>
+    let g:rustlings_ko_diagnostics_format = '%s'
+<
+                                                *g:rustlings_ko_original_format*
+g:rustlings_ko_original_format ~
+    원문 메시지 표시 형식 (show_original 활성화 시). 기본값: "\n[원문] %s"
+>
+    let g:rustlings_ko_original_format = "\n[원문] %s"
+<
+                                                *g:rustlings_ko_llm_provider*
+g:rustlings_ko_llm_provider ~
+    LLM 프로바이더. 'anthropic' 또는 'openai'.
+    mode가 'llm'일 때만 사용됩니다. 기본값: ''
+>
+    let g:rustlings_ko_llm_provider = 'anthropic'
+<
+                                                *g:rustlings_ko_llm_api_key*
+g:rustlings_ko_llm_api_key ~
+    LLM API 키. mode가 'llm'일 때만 사용됩니다. 기본값: ''
+>
+    let g:rustlings_ko_llm_api_key = $ANTHROPIC_API_KEY
+<
+==============================================================================
+5. 명령어                                          *rustlings-ko-commands*
+
+                                                        *:RustDiagKo*
+:RustDiagKo {subcommand} ~
+
+    사용 가능한 하위 명령어:
+
+    enable      번역 활성화
+    disable     번역 비활성화
+    toggle      활성화/비활성화 전환
+    clear-cache 번역 캐시 초기화
+    status      현재 상태 표시
+
+==============================================================================
+6. 백엔드                                         *rustlings-ko-backends*
+
+rustlings-ko.vim은 다양한 LSP 백엔드를 지원합니다:
+
+ALE ~
+    ALE가 로드되어 있으면 `ALELintPost` 이벤트를 사용하여 진단 메시지를
+    자동으로 번역합니다.
+
+vim-lsp ~
+    vim-lsp가 로드되어 있으면 `lsp_diagnostics_updated` 이벤트를 사용하여
+    진단 메시지를 자동으로 번역합니다.
+
+coc.nvim ~
+    coc.nvim이 로드되어 있으면 `CocDiagnosticChange` 이벤트를 사용하여
+    진단 메시지를 자동으로 번역합니다.
+
+quickfix ~
+    LSP 플러그인 없이도 `:make`, `:compiler cargo` 등으로 생성된
+    quickfix/location list의 메시지를 번역합니다.
+
+==============================================================================
+7. LLM 모드                                           *rustlings-ko-llm*
+
+오프라인 매핑에서 번역을 찾지 못한 경우, LLM API를 사용하여
+비동기 번역을 시도합니다. 번역 결과는 캐시에 저장되어
+다음 진단 새로고침 시 표시됩니다.
+
+설정 예시: >
+    let g:rustlings_ko_mode = 'llm'
+    let g:rustlings_ko_llm_provider = 'anthropic'
+    let g:rustlings_ko_llm_api_key = $ANTHROPIC_API_KEY
+<
+지원되는 프로바이더:
+- 'anthropic' - Anthropic Claude API
+- 'openai'    - OpenAI GPT API
+
+==============================================================================
+8. 라이선스                                        *rustlings-ko-license*
+
+MIT License
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

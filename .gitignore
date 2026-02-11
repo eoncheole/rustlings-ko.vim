@@ -1,0 +1,26 @@
+# Vim swap/backup/undo files
+*.swp
+*.swo
+*~
+*.un~
+
+# Vim session files
+Session.vim
+Sessionx.vim
+
+# Vim tags
+tags
+tags.lock
+tags.temp
+
+# Generated help tags
+doc/tags
+
+# macOS
+.DS_Store
+
+# Editor/IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
