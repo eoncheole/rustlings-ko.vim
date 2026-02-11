@@ -89,13 +89,13 @@ function! s:try_pattern_list(patterns, message) abort
     if !empty(l:m)
       let l:result = l:entry.translation
       if l:m[1] !=# ''
-        let l:result = substitute(l:result, '%1', l:m[1], 'g')
+        let l:result = substitute(l:result, '%1', escape(l:m[1], '&~\'), 'g')
       endif
       if len(l:m) > 2 && l:m[2] !=# ''
-        let l:result = substitute(l:result, '%2', l:m[2], 'g')
+        let l:result = substitute(l:result, '%2', escape(l:m[2], '&~\'), 'g')
       endif
       if len(l:m) > 3 && l:m[3] !=# ''
-        let l:result = substitute(l:result, '%3', l:m[3], 'g')
+        let l:result = substitute(l:result, '%3', escape(l:m[3], '&~\'), 'g')
       endif
       return l:result
     endif
