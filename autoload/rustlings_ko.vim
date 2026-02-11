@@ -41,8 +41,11 @@ function! rustlings_ko#activate() abort
     autocmd QuickFixCmdPost l* call rustlings_ko#translate_loclist()
   augroup END
 
-  " Auto-check on save when no LSP backend is available
-  if get(g:, 'rustlings_ko_auto_check', 1) && s:detected_backend ==# 'quickfix'
+  " Auto-check on save when backend cannot populate quickfix automatically.
+  " coc.nvim shows diagnostics via its own UI (virtual text), not quickfix,
+  " so builder is needed for both 'quickfix' and 'coc' backends.
+  if get(g:, 'rustlings_ko_auto_check', 1)
+        \ && (s:detected_backend ==# 'quickfix' || s:detected_backend ==# 'coc')
     call rustlings_ko#builder#setup()
   endif
 endfunction
@@ -203,7 +206,9 @@ function! rustlings_ko#status() abort
   echomsg '  활성화: ' . (g:rustlings_ko_enabled ? '예' : '아니오')
   echomsg '  모드: ' . g:rustlings_ko_mode
   echomsg '  백엔드: ' . (s:detected_backend !=# '' ? s:detected_backend : '미감지')
-  echomsg '  자동 빌드: ' . (s:detected_backend ==# 'quickfix' && get(g:, 'rustlings_ko_auto_check', 1) ? '예 (저장 시 cargo check)' : '아니오')
+  let l:auto_build = get(g:, 'rustlings_ko_auto_check', 1)
+        \ && (s:detected_backend ==# 'quickfix' || s:detected_backend ==# 'coc')
+  echomsg '  자동 빌드: ' . (l:auto_build ? '예 (저장 시 cargo check)' : '아니오')
   echomsg '  캐시 크기: ' . rustlings_ko#cache#size() . '/' . g:rustlings_ko_cache_max_size
   if g:rustlings_ko_mode ==# 'llm'
     echomsg '  LLM 프로바이더: ' . g:rustlings_ko_llm_provider
