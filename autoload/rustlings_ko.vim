@@ -72,6 +72,25 @@ endfunction
 " Main Translation Function
 " ---------------------------------------------------------------------------
 
+" Returns Korean translation WITHOUT [원문] formatting.
+" Use this for virtual text and other compact displays.
+function! rustlings_ko#translate_raw(message) abort
+  if !g:rustlings_ko_enabled || a:message ==# ''
+    return a:message
+  endif
+  let l:cached = rustlings_ko#cache#get(a:message)
+  if l:cached isnot v:null
+    return l:cached
+  endif
+  let l:translated = rustlings_ko#translator#translate(a:message)
+  if l:translated isnot v:null
+    call rustlings_ko#cache#set(a:message, l:translated)
+    return l:translated
+  endif
+  return a:message
+endfunction
+
+" Returns Korean translation WITH optional [원문] formatting.
 function! rustlings_ko#translate(message) abort
   if !g:rustlings_ko_enabled
     return a:message
