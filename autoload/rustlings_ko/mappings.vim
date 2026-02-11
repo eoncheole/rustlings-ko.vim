@@ -104,7 +104,7 @@ function! s:try_pattern_list(patterns, message) abort
 endfunction
 
 " ===========================================================================
-" Error Codes (160+ entries)
+" Error Codes (369 entries)
 " ===========================================================================
 function! rustlings_ko#mappings#get_error_codes() abort
   if s:error_codes_loaded
@@ -348,6 +348,139 @@ function! rustlings_ko#mappings#get_error_codes() abort
         \ 'E0728': '`await`는 `async` 함수나 블록에서만 사용할 수 있습니다',
         \ 'E0733': '재귀적 `async fn`은 허용되지 않습니다',
         \ 'E0734': '잘못된 `#[stable]` 속성입니다',
+        \
+        \ 'E0062': '구조체 리터럴에서 필드가 두 번 이상 지정되었습니다',
+        \ 'E0064': '구조체 리터럴에 필드가 너무 많습니다',
+        \ 'E0069': '`return`문에 값이 필요합니다',
+        \ 'E0070': '잘못된 좌변 값에 할당을 시도했습니다',
+        \ 'E0071': '구조체 초기화에 `{}` 문법을 사용해야 합니다',
+        \ 'E0072': '재귀 타입은 크기를 알 수 없습니다 (`Box`를 사용하세요)',
+        \ 'E0080': '상수 평가 중 오류가 발생했습니다',
+        \ 'E0081': '열거형 판별자 값이 중복됩니다',
+        \ 'E0084': '판별자가 없는 열거형에 repr 속성을 사용할 수 없습니다',
+        \ 'E0091': '사용되지 않는 타입 매개변수입니다',
+        \ 'E0092': '인식할 수 없는 내장 함수 이름입니다',
+        \ 'E0093': '잘못된 내장 함수 선언입니다',
+        \ 'E0094': '내장 함수의 타입 매개변수 수가 잘못되었습니다',
+        \ 'E0108': '수명 매개변수가 너무 많습니다',
+        \ 'E0116': '현재 크레이트에 정의되지 않은 타입에 inherent impl을 할 수 없습니다',
+        \ 'E0117': '외부 타입에 외부 트레이트를 구현할 수 없습니다 (고아 규칙)',
+        \ 'E0118': '기본 타입에 inherent impl을 할 수 없습니다',
+        \ 'E0121': '타입 자리에 `_`를 사용할 수 없습니다',
+        \ 'E0124': '구조체에 같은 이름의 필드가 두 개 이상 있습니다',
+        \ 'E0128': '타입 매개변수의 기본값에 다른 타입 매개변수를 사용할 수 없습니다',
+        \ 'E0130': '패턴에서 상수가 아닌 경로를 사용했습니다',
+        \ 'E0131': '`main` 함수는 타입 매개변수를 가질 수 없습니다',
+        \ 'E0132': '`#[start]` 함수가 잘못된 시그니처입니다',
+        \ 'E0136': '`main` 함수가 아닌 곳에 진입점이 정의되었습니다',
+        \ 'E0137': '동일한 함수에 두 개 이상의 `#[main]` 속성이 있습니다',
+        \ 'E0138': '여러 개의 `#[start]` 함수가 정의되었습니다',
+        \ 'E0201': '구현에서 중복된 정의가 있습니다',
+        \ 'E0204': 'Copy를 구현할 수 없는 타입입니다',
+        \ 'E0205': 'Copy를 구현할 수 없는 타입입니다',
+        \ 'E0206': 'Copy를 구현할 수 없는 타입입니다',
+        \ 'E0207': '구현에서 사용되지 않는 타입/수명 매개변수입니다',
+        \ 'E0210': '트레이트 일관성 규칙을 위반했습니다',
+        \ 'E0229': '관련 타입 바인딩이 잘못된 위치에 있습니다',
+        \ 'E0243': '타입 인수가 너무 적습니다',
+        \ 'E0244': '타입 인수가 너무 많습니다',
+        \ 'E0246': '비정상적인 제네릭 인수 수입니다',
+        \ 'E0248': '값이 아닌 곳에 값을 사용했습니다',
+        \ 'E0297': '루프에서 반박 가능한 패턴을 사용했습니다',
+        \ 'E0311': '수명 제약 조건을 추론할 수 없습니다',
+        \ 'E0314': '제네릭 타입을 구체적으로 지정해야 합니다',
+        \ 'E0315': '관련 타입 바운드에서 수명을 추론할 수 없습니다',
+        \ 'E0316': '중첩된 `impl Trait`는 허용되지 않습니다',
+        \ 'E0318': '`Sized` 트레이트를 역으로 구현할 수 없습니다',
+        \ 'E0321': '교차 크레이트 트레이트 특수화가 허용되지 않습니다',
+        \ 'E0322': '명시적 `Sized` 구현은 허용되지 않습니다',
+        \ 'E0323': '연관 상수가 아닌 곳에 연관 상수를 정의했습니다',
+        \ 'E0324': '연관 타입이 아닌 곳에 연관 타입을 정의했습니다',
+        \ 'E0325': '연관 함수가 아닌 곳에 연관 함수를 정의했습니다',
+        \ 'E0366': 'Drop을 구현할 수 없는 타입에 Drop을 구현했습니다',
+        \ 'E0367': 'Drop 구현에 불필요한 타입 매개변수가 있습니다',
+        \ 'E0371': '같은 trait를 두 번 구현할 수 없습니다',
+        \ 'E0375': 'CoerceUnsized를 구현할 수 없는 타입입니다',
+        \ 'E0376': 'CoerceUnsized 구현에서 단 하나의 필드만 변환해야 합니다',
+        \ 'E0445': '비공개 트레이트를 공개 인터페이스에서 사용했습니다',
+        \ 'E0446': '비공개 타입을 공개 인터페이스에서 사용했습니다',
+        \ 'E0447': '가시성이 너무 제한적입니다',
+        \ 'E0448': '가시성이 너무 넓습니다',
+        \ 'E0452': '잘못된 lint 속성입니다',
+        \ 'E0454': '`#[link]`에 `name` 값이 없습니다',
+        \ 'E0455': '잘못된 링크 종류입니다',
+        \ 'E0456': '알 수 없는 링크 종류입니다',
+        \ 'E0457': '플러그인이 `#[plugin_registrar]` 함수를 제공하지 않습니다',
+        \ 'E0459': '`#[link]`에 `name` 인수가 없습니다',
+        \ 'E0460': '연결 매크로 호환성 불일치',
+        \ 'E0461': '연결 라이브러리 형식 불일치',
+        \ 'E0462': '연결 라이브러리를 찾을 수 없습니다',
+        \ 'E0464': '여러 버전의 크레이트가 연결되었습니다',
+        \ 'E0465': '같은 크레이트의 여러 버전이 사용되었습니다',
+        \ 'E0469': '가져온 매크로를 찾을 수 없습니다',
+        \ 'E0519': '현재 크레이트 타입에서 이 엔트리 포인트를 사용할 수 없습니다',
+        \ 'E0522': '`#[lang]` 속성이 잘못 사용되었습니다',
+        \ 'E0524': '빌려진 값을 캡처하는 클로저에 `move`를 사용할 수 없습니다',
+        \ 'E0554': '#![feature] 속성은 nightly에서만 사용할 수 있습니다',
+        \ 'E0561': '함수 포인터 반환형에 `impl Trait`를 사용할 수 없습니다',
+        \ 'E0563': '수명이 관련 타입에서 사용되지 않았습니다',
+        \ 'E0564': '타입 어노테이션에 수명이 필요합니다',
+        \ 'E0565': '잘못된 리터럴 값의 메타 항목입니다',
+        \ 'E0567': 'auto 트레이트에 제네릭 매개변수를 사용할 수 없습니다',
+        \ 'E0568': 'auto 트레이트에 super 트레이트를 추가할 수 없습니다',
+        \ 'E0569': 'auto 트레이트에 메서드가 있을 수 없습니다',
+        \ 'E0570': '대상 기능 사양에 잘못된 값이 있습니다',
+        \ 'E0571': '`break`에 값을 사용할 수 없는 위치입니다',
+        \ 'E0572': '`return`문에 값을 잘못 사용했습니다',
+        \ 'E0573': '예상된 종류와 다른 종류가 발견되었습니다',
+        \ 'E0575': '항목이 예상되었지만 다른 것이 발견되었습니다',
+        \ 'E0576': '관련 항목을 찾을 수 없습니다',
+        \ 'E0577': '모듈이 예상되었지만 다른 것이 발견되었습니다',
+        \ 'E0578': '모듈 경로의 상위 항목이 모듈이 아닙니다',
+        \ 'E0579': 'fn 아이템이 매칭되지 않습니다',
+        \ 'E0580': '`main` 함수의 시그니처가 올바르지 않습니다',
+        \ 'E0581': '반환 타입의 수명이 지정되지 않았습니다',
+        \ 'E0582': '수명이 함수 시그니처에서 사용되지 않았습니다',
+        \ 'E0584': '포함 모듈이 공개가 아닙니다',
+        \ 'E0585': '문서 주석이 잘못된 위치에 있습니다',
+        \ 'E0586': '포괄 범위 패턴 `..` 뒤에 추가 요소가 있습니다',
+        \ 'E0589': '`repr(packed)`와 `repr(align)`를 동시에 사용할 수 없습니다',
+        \ 'E0590': '`break`나 `continue`에 유효하지 않은 레이블입니다',
+        \ 'E0591': '함수 포인터 사용이 잘못되었습니다',
+        \ 'E0594': '불변 항목에 할당할 수 없습니다',
+        \ 'E0595': '클로저에서 불변 바인딩을 캡처할 수 없습니다',
+        \ 'E0598': '빌린 값에 할당할 수 없습니다',
+        \ 'E0602': '알 수 없는 lint 이름입니다',
+        \ 'E0611': '비공개 구조체 필드에 패턴 매칭할 수 없습니다',
+        \ 'E0612': '익명 필드에 숫자 인덱스로 접근해야 합니다',
+        \ 'E0613': '존재하지 않는 튜플 인덱스입니다',
+        \ 'E0619': '강제 변환 규칙에 의해 타입이 일치하지 않습니다',
+        \ 'E0629': '`...` 패턴은 제거되었습니다 (`..=`를 사용하세요)',
+        \ 'E0630': '잘못된 바이너리 연산자 오버로드입니다',
+        \ 'E0640': '알 수 없는 extern ABI입니다',
+        \ 'E0641': '유니온 필드에 `#[non_exhaustive]`를 사용할 수 없습니다',
+        \ 'E0644': '클로저/제너레이터 타입은 전역에서 사용할 수 없습니다',
+        \ 'E0645': '수명/타입 바운드에서 `impl Trait`를 사용할 수 없습니다',
+        \ 'E0658': '안정화되지 않은 기능을 사용했습니다',
+        \ 'E0698': '`async fn`에서 타입 어노테이션이 필요합니다',
+        \ 'E0700': '리턴에서 `impl Trait`가 수명을 캡처하지 못합니다',
+        \ 'E0706': '트레이트에서 `async fn`은 지원되지 않습니다',
+        \ 'E0716': '임시 값이 충분히 오래 살지 못합니다',
+        \ 'E0720': '불투명 타입이 자기 자신을 참조합니다',
+        \ 'E0746': '반환 타입에 `impl Trait`가 필요합니다',
+        \ 'E0747': '제네릭 인수의 순서가 잘못되었습니다',
+        \ 'E0758': '`#[doc(alias)]` 속성값이 올바르지 않습니다',
+        \ 'E0759': '`impl Trait` 반환 타입의 수명이 충분하지 않습니다',
+        \ 'E0764': '가변 참조를 상수 컨텍스트에서 사용할 수 없습니다',
+        \ 'E0767': '기본 타입에 대한 패턴 매칭이 허용되지 않습니다',
+        \ 'E0774': '#[derive]는 struct, enum, union에만 사용할 수 있습니다',
+        \ 'E0782': '트레이트 객체에는 `dyn` 키워드가 필요합니다',
+        \ 'E0785': '예상치 못한 `impl Trait` 타입입니다',
+        \ 'E0786': '잘못된 `const` 매개변수 타입입니다',
+        \ 'E0790': '정규화된 경로를 사용해야 합니다',
+        \ 'E0791': '정적 참조가 불일치합니다',
+        \ 'E0792': '불투명 타입의 기대 조건이 충족되지 않습니다',
+        \ 'E0793': '유니온 필드에 `ManuallyDrop`이 아닌 `Drop` 타입을 사용할 수 없습니다',
         \ }
 
   let s:error_codes_loaded = 1
@@ -355,7 +488,7 @@ function! rustlings_ko#mappings#get_error_codes() abort
 endfunction
 
 " ===========================================================================
-" Patterns (86 entries)
+" Patterns (120 entries)
 "
 " Each entry: {'pattern': <vim regex>, 'translation': <Korean with %1/%2>}
 " ===========================================================================
@@ -547,6 +680,88 @@ function! rustlings_ko#mappings#get_patterns() abort
         \  'translation': '`await`는 `async` 함수나 블록 안에서만 사용할 수 있습니다'},
         \ {'pattern': '`\([^`]*\)` is not a future',
         \  'translation': '`%1`은(는) Future가 아닙니다'},
+        \
+        \ {'pattern': 'recursive type `\([^`]*\)` has infinite size',
+        \  'translation': '재귀 타입 `%1`은(는) 크기가 무한합니다 (Box를 사용하세요)'},
+        \ {'pattern': 'recursive type has infinite size',
+        \  'translation': '재귀 타입은 크기가 무한합니다 (Box를 사용하세요)'},
+        \ {'pattern': 'insert some indirection.*`Box`',
+        \  'translation': '간접 참조를 사용하세요 (예: `Box`)'},
+        \
+        \ {'pattern': 'type annotations needed for `\([^`]*\)`',
+        \  'translation': '`%1`에 대한 타입 어노테이션이 필요합니다'},
+        \ {'pattern': 'type annotations needed',
+        \  'translation': '타입 어노테이션이 필요합니다'},
+        \ {'pattern': 'consider giving this binding a type',
+        \  'translation': '이 바인딩에 타입을 지정해 보세요'},
+        \
+        \ {'pattern': 'cannot infer type for type parameter `\([^`]*\)`',
+        \  'translation': '타입 매개변수 `%1`의 타입을 추론할 수 없습니다'},
+        \ {'pattern': 'cannot infer type',
+        \  'translation': '타입을 추론할 수 없습니다'},
+        \
+        \ {'pattern': 'only traits defined in the current crate can be implemented for types defined outside',
+        \  'translation': '현재 크레이트의 트레이트만 외부 타입에 구현할 수 있습니다 (고아 규칙)'},
+        \
+        \ {'pattern': 'method `\([^`]*\)` has an incompatible type for trait',
+        \  'translation': '메서드 `%1`의 타입이 트레이트와 호환되지 않습니다'},
+        \ {'pattern': 'not all trait items implemented, missing: `\([^`]*\)`',
+        \  'translation': '트레이트 구현이 완전하지 않습니다. 누락: `%1`'},
+        \ {'pattern': 'not all trait items implemented',
+        \  'translation': '트레이트 구현이 완전하지 않습니다'},
+        \
+        \ {'pattern': 'cannot apply unary operator `!` to type `\([^`]*\)`',
+        \  'translation': '타입 `%1`에 단항 연산자 `!`를 적용할 수 없습니다'},
+        \ {'pattern': 'cannot apply unary operator `-` to type `\([^`]*\)`',
+        \  'translation': '타입 `%1`에 단항 연산자 `-`를 적용할 수 없습니다'},
+        \ {'pattern': 'binary operation `\([^`]*\)` cannot be applied to type `\([^`]*\)`',
+        \  'translation': '이항 연산자 `%1`를 타입 `%2`에 적용할 수 없습니다'},
+        \
+        \ {'pattern': 'index out of bounds',
+        \  'translation': '인덱스가 범위를 벗어났습니다'},
+        \ {'pattern': 'attempt to compute .* which would overflow',
+        \  'translation': '오버플로가 발생하는 연산입니다'},
+        \ {'pattern': 'attempt to divide by zero',
+        \  'translation': '0으로 나누기를 시도했습니다'},
+        \
+        \ {'pattern': 'the trait `\([^`]*\)` cannot be made into an object',
+        \  'translation': '트레이트 `%1`를 객체로 만들 수 없습니다'},
+        \ {'pattern': 'dyn Trait.*needs to be behind a pointer',
+        \  'translation': '`dyn Trait`는 포인터 뒤에 있어야 합니다 (`&dyn` 또는 `Box<dyn>`)'},
+        \ {'pattern': 'return type cannot have an unboxed trait object',
+        \  'translation': '반환 타입에 박싱되지 않은 트레이트 객체를 사용할 수 없습니다'},
+        \
+        \ {'pattern': 'move occurs because `\([^`]*\)` has type `\([^`]*\)`, which does not implement the `Copy` trait',
+        \  'translation': '`%1`의 타입 `%2`가 `Copy`를 구현하지 않아 이동이 발생합니다'},
+        \ {'pattern': 'which does not implement the `Copy` trait',
+        \  'translation': '`Copy` 트레이트를 구현하지 않습니다'},
+        \
+        \ {'pattern': 'method not found in `\([^`]*\)`',
+        \  'translation': '`%1`에 메서드를 찾을 수 없습니다'},
+        \
+        \ {'pattern': 'cannot multiply `\([^`]*\)` by `\([^`]*\)`',
+        \  'translation': '`%1`과 `%2`를 곱할 수 없습니다'},
+        \ {'pattern': 'cannot add `\([^`]*\)` to `\([^`]*\)`',
+        \  'translation': '`%2`에 `%1`을(를) 더할 수 없습니다'},
+        \ {'pattern': 'cannot subtract `\([^`]*\)` from `\([^`]*\)`',
+        \  'translation': '`%2`에서 `%1`을(를) 뺄 수 없습니다'},
+        \ {'pattern': 'cannot divide `\([^`]*\)` by `\([^`]*\)`',
+        \  'translation': '`%1`을(를) `%2`로 나눌 수 없습니다'},
+        \
+        \ {'pattern': 'temporary value dropped while borrowed',
+        \  'translation': '빌린 임시 값이 소멸되었습니다'},
+        \ {'pattern': 'creates a temporary value which is freed while still in use',
+        \  'translation': '아직 사용 중인 임시 값이 해제됩니다'},
+        \
+        \ {'pattern': '`\([^`]*\)` is a raw pointer; try dereferencing it',
+        \  'translation': '`%1`은(는) 원시 포인터입니다; 역참조해 보세요'},
+        \ {'pattern': 'cast to unsized type',
+        \  'translation': '크기를 알 수 없는 타입으로 캐스팅할 수 없습니다'},
+        \
+        \ {'pattern': '`#\[derive\]` can .* be used on structs, enums and unions',
+        \  'translation': '`#[derive]`는 struct, enum, union에만 사용할 수 있습니다'},
+        \ {'pattern': 'traits cannot be derived',
+        \  'translation': '트레이트에는 derive를 적용할 수 없습니다'},
         \ ]
 
   let s:patterns_loaded = 1
@@ -554,7 +769,7 @@ function! rustlings_ko#mappings#get_patterns() abort
 endfunction
 
 " ===========================================================================
-" Warnings (58 entries)
+" Warnings (74 entries)
 " ===========================================================================
 function! rustlings_ko#mappings#get_warnings() abort
   if s:warnings_loaded
@@ -680,6 +895,38 @@ function! rustlings_ko#mappings#get_warnings() abort
         \  'translation': '`vec![]` 대신 슬라이스를 사용할 수 있습니다'},
         \ {'pattern': 'clippy::unnecessary_unwrap',
         \  'translation': '불필요한 `unwrap()` 호출입니다'},
+        \ {'pattern': 'clippy::unused_self',
+        \  'translation': '`self` 매개변수가 사용되지 않습니다'},
+        \ {'pattern': 'clippy::wildcard_imports',
+        \  'translation': '와일드카드(`*`) 가져오기를 피하세요'},
+        \ {'pattern': 'clippy::unnecessary_cast',
+        \  'translation': '불필요한 타입 캐스팅입니다'},
+        \ {'pattern': 'clippy::redundant_field_names',
+        \  'translation': '필드 이름이 변수 이름과 같으면 생략할 수 있습니다'},
+        \ {'pattern': 'clippy::redundant_closure',
+        \  'translation': '불필요한 클로저입니다 (함수를 직접 전달하세요)'},
+        \ {'pattern': 'clippy::manual_map',
+        \  'translation': '수동 `match` 대신 `.map()`을 사용하세요'},
+        \ {'pattern': 'clippy::if_same_then_else',
+        \  'translation': 'if/else 분기의 내용이 같습니다'},
+        \ {'pattern': 'clippy::bool_comparison',
+        \  'translation': '불필요한 bool 비교입니다'},
+        \ {'pattern': 'clippy::string_lit_as_bytes',
+        \  'translation': '`.as_bytes()` 대신 바이트 리터럴 `b"..."`를 사용하세요'},
+        \ {'pattern': 'clippy::manual_strip',
+        \  'translation': '`strip_prefix`/`strip_suffix`를 사용하세요'},
+        \ {'pattern': 'clippy::match_ref_pats',
+        \  'translation': 'match에서 참조 패턴 대신 역참조를 사용하세요'},
+        \ {'pattern': 'clippy::ptr_arg',
+        \  'translation': '`&Vec<T>` 대신 `&[T]`를, `&String` 대신 `&str`을 사용하세요'},
+        \ {'pattern': 'clippy::large_enum_variant',
+        \  'translation': '열거형 변형의 크기가 너무 큽니다 (Box를 사용하세요)'},
+        \ {'pattern': 'clippy::type_complexity',
+        \  'translation': '타입이 너무 복잡합니다 (타입 별칭을 사용하세요)'},
+        \ {'pattern': 'clippy::too_many_arguments',
+        \  'translation': '함수의 인수가 너무 많습니다'},
+        \ {'pattern': 'clippy::missing_safety_doc',
+        \  'translation': 'unsafe 함수에 안전성 설명이 없습니다'},
         \ ]
 
   let s:warnings_loaded = 1
@@ -687,7 +934,7 @@ function! rustlings_ko#mappings#get_warnings() abort
 endfunction
 
 " ===========================================================================
-" Hints (45 entries)
+" Hints (64 entries)
 " ===========================================================================
 function! rustlings_ko#mappings#get_hints() abort
   if s:hints_loaded
@@ -791,6 +1038,49 @@ function! rustlings_ko#mappings#get_hints() abort
         \  'translation': '도움말: 의도적이라면 이름 앞에 `_`를 붙이세요'},
         \ {'pattern': 'prefix .* with an underscore',
         \  'translation': '이름 앞에 `_`를 붙이세요'},
+        \
+        \ {'pattern': 'consider boxing the return type',
+        \  'translation': '반환 타입을 `Box`로 감싸보세요'},
+        \ {'pattern': 'consider changing this to `&\([^`]*\)`',
+        \  'translation': '`&%1`로 변경해 보세요'},
+        \ {'pattern': 'consider adding `move` keyword',
+        \  'translation': '`move` 키워드를 추가해 보세요'},
+        \ {'pattern': 'consider using `\([^`]*\)` instead',
+        \  'translation': '`%1`을(를) 대신 사용해 보세요'},
+        \
+        \ {'pattern': 'one type is more general than the other',
+        \  'translation': '하나의 타입이 다른 타입보다 더 일반적입니다'},
+        \ {'pattern': 'lifetime mismatch',
+        \  'translation': '수명이 일치하지 않습니다'},
+        \ {'pattern': 'first, the lifetime cannot outlive',
+        \  'translation': '우선, 수명이 다른 것보다 오래 살 수 없습니다'},
+        \ {'pattern': 'but, the lifetime must be valid for',
+        \  'translation': '하지만, 수명이 유효해야 합니다'},
+        \
+        \ {'pattern': 'help: store this in the heap by calling `Box::new`',
+        \  'translation': '도움말: `Box::new`로 힙에 저장하세요'},
+        \ {'pattern': 'help: consider adding a `\([^`]*\)` impl for',
+        \  'translation': '도움말: `%1` 구현을 추가해 보세요'},
+        \ {'pattern': 'help: consider annotating .* with `#\[derive(\([^)]*\))\]`',
+        \  'translation': '도움말: `#[derive(%1)]`를 추가해 보세요'},
+        \
+        \ {'pattern': 'required by a bound introduced by this call',
+        \  'translation': '이 호출에 의해 도입된 바운드에 의해 필요합니다'},
+        \ {'pattern': 'required by this bound in `\([^`]*\)`',
+        \  'translation': '`%1`의 이 바운드에 의해 필요합니다'},
+        \ {'pattern': 'required for `\([^`]*\)` to implement `\([^`]*\)`',
+        \  'translation': '`%1`이(가) `%2`를 구현하기 위해 필요합니다'},
+        \
+        \ {'pattern': 'help: use `dyn`',
+        \  'translation': '도움말: `dyn` 키워드를 사용하세요'},
+        \ {'pattern': 'note: `\([^`]*\)` is defined in an external crate',
+        \  'translation': '참고: `%1`은(는) 외부 크레이트에 정의되어 있습니다'},
+        \ {'pattern': 'note: for more information, visit',
+        \  'translation': '참고: 자세한 정보는 다음 링크를 방문하세요'},
+        \ {'pattern': 'help: consider using `\([^`]*\)` here',
+        \  'translation': '도움말: 여기에서 `%1`을(를) 사용해 보세요'},
+        \ {'pattern': 'use `&raw const` instead to create a raw pointer',
+        \  'translation': '원시 포인터를 만들려면 `&raw const`를 사용하세요'},
         \ ]
 
   let s:hints_loaded = 1
