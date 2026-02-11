@@ -59,6 +59,9 @@ let g:rustlings_ko_diagnostics_format = get(g:, 'rustlings_ko_diagnostics_format
 " Printf-style format for appended original message
 let g:rustlings_ko_original_format = get(g:, 'rustlings_ko_original_format', "\n[원문] %s")
 
+" Auto-check on save: run cargo check when no LSP backend is detected
+let g:rustlings_ko_auto_check = get(g:, 'rustlings_ko_auto_check', 1)
+
 " ---------------------------------------------------------------------------
 " Commands
 " ---------------------------------------------------------------------------
